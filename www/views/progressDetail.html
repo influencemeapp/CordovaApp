@@ -1,0 +1,112 @@
+<main>
+    <div class="mbr-section--full-height center mbr-section--bg-adapted mbr-section--fixed-size mbr-section--relative mbr-box"
+        id="bodyImg">
+        <div class="mbr-box__magnet--center-center mbr-box__magnet--sm-padding">
+            <div class="containter">
+                <div class="row">
+                    <div class="whiteN EsphimereLight">
+                        <div style="padding-top: 15vh">
+                            <p class="text-center fadeIn animated margin0 cinco" style="font-size: 15px;animation-delay: 0.5s">{{::progressDetail.athleteName}}</p>
+                            <p class="text-center fadeIn animated margin0 cinco" style="font-size: 30px;animation-delay: 1s">{{::progressDetail.planName}}</p>
+                        </div>
+                        <div style="padding-top: 15vh">
+                            <p class="text-center fadeIn animated margin0 cinco" style="font-size: 30px;animation-delay: 1.5s">{{::progressDetail.progressCustomer}} %</p>
+                            <p class="text-center fadeIn animated margin0 cinco"
+                                style="font-size: 15px;animation-delay: 2s">Completado</p>
+                        </div>
+                        <div style="padding-top: 5vh">
+                            <p class="text-center fadeIn animated margin0 cinco" style="font-size: 15px;font-weight:bold;animation-delay: 2.5s">Plan Actual</p>
+                        </div>
+                        <div class="fadeIn animated" style="padding-top: 5vh;animation-delay: 3s">
+                            <div style="background: rgba(0, 0, 0, 0.60);height: 35px">
+                                <div style="padding: 10px" class="left">
+                                    <b>Días Completados:</b> {{::progressDetail.daysCompleted}}/{{::progressDetail.totalDays}}
+                                    días</div>
+                            </div>
+                        </div>
+                        <div class="fadeIn animated" style="padding-top: 1vh;animation-delay: 3s">
+                            <div style="background: rgba(0, 0, 0, 0.60);height: 35px">
+                                <div style="padding: 10px" class="left">
+                                    <b>Tiempo Total:</b> {{::progressDetail.totalPlanTime}}</div>
+                                <div style="padding: 10px"
+                                    class="right">
+                                    <b>Tiempo Ejercicios:</b> {{::progressDetail.exercisesCompleted}}/{{::progressDetail.totalExercises}}</div>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l12 xl12" style="padding-top: 2vh">
+                            <div class="col s6 m6 l6 xl6">
+                                <div class="btn-inverse mbr-buttons--left mbr-buttons--right">
+                                    <center>
+                                        <a class="mbr-buttons__btn btn btn-lg btn-danger pull-center EsphimereLight buttom-compartir fadeIn animated waves-effect waves-light"
+                                            style="animation-delay: 3.5s;z-index: 0;font-size: 3vw !important" href="#!progressDetail">Compartir</a>
+                                    </center>
+                                </div>
+                            </div>
+                            <div class="col s6 m6 l6 xl6">
+                                <div class="btn-inverse mbr-buttons--left mbr-buttons--right">
+                                    <center>
+                                        <a id="invitar" class="mbr-buttons__btn btn btn-lg btn-info pull-center EsphimereLight buttom-invitar fadeIn animated waves-effect waves-light"
+                                            style="animation-delay: 3.5s;z-index: 0;font-size: 3vw !important" href="sms:?body=Te invito a usar InfluenceME. Prueba las rutinas de tus influencers favoritos, cuando quieras y donde quieras. Descargala aquí: http://influencemeapp.com/">Invitar</a>
+                                    </center>
+                                </div>
+                            </div>
+                            <div class="col s3 m3 l3 xl3"></div>
+                            <div class="col s6 m6 l6 xl6">
+                                <div class="btn-inverse mbr-buttons--left mbr-buttons--right">
+                                    <center>
+                                        <a class="mbr-buttons__btn btn btn-lg btn-info pull-center EsphimereLight buttom-invitar fadeIn animated waves-effect waves-light"
+                                            style="animation-delay: 3.6s;z-index: 0;background-color: #ffffff;border-color: #ffffff;font-size: 3vw !important"
+                                            href="#!/routinesByPlan" ng-click="onePlan(progressDetail.idPlan)">Rutinas del Plan</a>
+                                    </center>
+                                </div>
+                            </div>
+                            <div class="col s3 m3 l3 xl3"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<footer class="page-footer footer_e fadeIn animated background4d" style="animation-delay: 1.5s">
+    <div class="footer-copyright">
+        <div class="container center EsphimereLight" style="width: 100% !important">
+            <div class="row marginLeftBottom">
+                <div class="col s2"></div>
+                <div class="col s2">
+                    <a href="#!home" class="ccc">
+                        <div class="icon_middle floatNone">
+                            <i class="flaticon-worldwide"></i>
+                            <span class="font9MarginLeft20">Explorar</span>
+                        </div>
+                    </a>
+                </div>
+                <div class="col s2">
+                    <a href="#!progressDetail" class="ccc">
+                        <div class="icon_middle floatNone active-foot">
+                            <i class="flaticon-repeat-1"></i>
+                            <span class="font9MarginLeft20">Progreso</span>
+                        </div>
+                    </a>
+                </div>
+                <div class="col s2">
+                    <a href="#!planSelection" class="ccc">
+                        <div class="icon_middle floatNone">
+                            <i class="flaticon-login"></i>
+                            <span class="font9MarginLeft20">Entrenar</span>
+                        </div>
+                    </a>
+                </div>
+                <div class="col s2">
+                    <a href="#!perfil" class="ccc">
+                        <div class="icon_middle floatNone">
+                            <i class="flaticon-user-3"></i>
+                            <span class="font9MarginLeft15">&nbsp;&nbsp;&nbsp;Perfil</span>
+                        </div>
+                    </a>
+                </div>
+                <div class="col s2"></div>
+            </div>
+        </div>
+    </div>
+</footer>
