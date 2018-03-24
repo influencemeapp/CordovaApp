@@ -190,10 +190,23 @@
 					<span>Unidades de Peso</span>
 				</div>
 				<div class="col s2 m2 l2 xl2" style="font-size:15px">
-					<!-- <span>KG</span> -->
+					<span>{{unitW}}</span>
 				</div>
 				<div class="col s2 m2 l2 xl2 center" style="font-size:12px">
 					<a sidebar-toggle="sidebar7" class="onsidebar">
+						<img src="dist/img/right-arrow.png" alt="right arrow" width="20">
+					</a>
+				</div>
+			</div>
+			<div class="row effectJ background4d whiteN" style="padding:15px;margin-bottom:2px;animation-delay:1.2s">
+				<div class="col s7 m7 l7 xl7" style="font-size:15px">
+					<span>Unidades de Altura</span>
+				</div>
+				<div class="col s2 m2 l2 xl2" style="font-size:15px">
+					<span>{{unitH}}</span>
+				</div>
+				<div class="col s2 m2 l2 xl2 center" style="font-size:12px">
+					<a sidebar-toggle="sidebar8" class="onsidebar">
 						<img src="dist/img/right-arrow.png" alt="right arrow" width="20">
 					</a>
 				</div>
@@ -367,12 +380,12 @@
 						 data-error=".errorTxt12" disabled="disabled">
 						<div class="errorTxt12"></div>
 					</div>
-					<div class="input-field col s12">
+					<!-- <div class="input-field col s12">
 						<label for="altura">Altura</label>
 						<input id="altura" name="altura" type="text" style="color:#FF4200 !important" class="active validate"
 						 value="{{::customerProfile.height}} {{unitH}}" data-error=".errorTxt13" disabled="disabled">
 						<div class="errorTxt13"></div>
-					</div>
+					</div> -->
 					<div class="col s12" style="margin-bottom: 30px">
 						<select id="unidad" name="unidad">
 							<option value="" selected="selected">Seleccione Unidad</option>
@@ -382,6 +395,51 @@
 					</div>
 					<center>
 						<a class="btn btn-lg btn-danger fadeInUp animated buttom-inicio waves-effect waves-light" ng-click="updateUnidad()"
+						 style="animation-delay: 1.2s;display: block;font-size: 150% !important;width: 70% !important;height: 50px;padding: 7px !important">Actualizar</a>
+					</center>
+				</div>
+			</form>
+		</div>
+	</main>
+</sidebar>
+<sidebar id="sidebar8" size="100%" position="right" is-expanded="true">
+	<header>
+		<nav class="nav-extended background4d">
+			<div class="nav-wrapper center fadeInDown animated">
+				<div class="left">
+					<a sidebar-toggle="sidebar8">
+						<i class="flaticon-previous"></i>
+					</a>
+				</div>
+				<span style="margin-left:-4em">Cambiar Unidad</span>
+			</div>
+		</nav>
+	</header>
+	<main>
+		<div class="row">
+			<form class="formValidateUnidad" id="formValidateUnidad" method="get" action="" novalidate="novalidate" style="padding:20px">
+				<div class="row">
+					<!-- <div class="input-field col s12">
+						<label for="peso">Peso</label>
+						<input id="peso" name="peso" type="text" style="color:#FF4200 !important" class="active validate" value="{{::customerProfile.weight}} {{unitW}}"
+						 data-error=".errorTxt12" disabled="disabled">
+						<div class="errorTxt12"></div>
+					</div> -->
+					<div class="input-field col s12">
+						<label for="altura">Altura</label>
+						<input id="altura" name="altura" type="text" style="color:#FF4200 !important" class="active validate"
+						 value="{{::customerProfile.height}} {{unitH}}" data-error=".errorTxt13" disabled="disabled">
+						<div class="errorTxt13"></div>
+					</div>
+					<div class="col s12" style="margin-bottom: 30px">
+						<select id="unidad" name="unidad">
+							<option value="" selected="selected">Seleccione Unidad</option>
+							<option value="1">CMS</option>
+							<option value="2">Pulgadas</option>
+						</select>
+					</div>
+					<center>
+						<a class="btn btn-lg btn-danger fadeInUp animated buttom-inicio waves-effect waves-light" ng-click="updateAltura()"
 						 style="animation-delay: 1.2s;display: block;font-size: 150% !important;width: 70% !important;height: 50px;padding: 7px !important">Actualizar</a>
 					</center>
 				</div>
