@@ -1165,7 +1165,7 @@ p {
 	bottom: 0;
 	background-color: #4D4D4D;
 	/* background-color: transparent; */
-	opacity: 0.3;
+	/* opacity: 0.3; */
 	z-index: 9999;
 	height: 100%;
 }

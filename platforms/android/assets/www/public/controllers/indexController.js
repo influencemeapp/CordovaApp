@@ -11,7 +11,6 @@ app.filter('strLimit', ['$filter', function ($filter) {
 		if (input.length <= limit) {
 			return input;
 		}
-
 		return $filter('limitTo')(input, limit) + '...';
 	};
 }]);
@@ -188,6 +187,7 @@ app.controller('LoginController', function ($scope, ApiFactory, typeLoginParam) 
 	});
 
 	var provider = new firebase.auth.FacebookAuthProvider().setCustomParameters({ auth_type: 'reauthenticate' });
+	
 	$scope.loginFB = function () {
 		firebase.auth().signInWithRedirect(provider).then(function () {
 			firebase.auth().getRedirectResult().then(function (result) {
@@ -197,12 +197,22 @@ app.controller('LoginController', function ($scope, ApiFactory, typeLoginParam) 
 				localStorage.setItem("typeLoginParam", 2);
 				location.href = "#!/home";
 			}).catch(function (error) {
+				
 				console.log(error);
+				console.log(error.credential);
+				if (error.code === 'auth/account-exists-with-different-credential') {
+					var pendingCred = error.credential;
+					var email = error.email;
+					firebase.auth().currentUser.linkWithCredential(pendingCred);
+				}
+
 				var errorCode = error.code;
 				var errorMessage = error.message;
+				
 			});
 		});
 	};
+	
 
 });
 
@@ -343,11 +353,16 @@ app.controller('LoginTlfController', function ($scope, ApiFactory, typeLoginPara
 							phone: phoneComplete
 						}); //Login SMS
 						localStorage.setItem("typeLoginParam", 1);
-
 						location.href = "#!/home";
 					}, function (error) {
 						console.log("aqui1 => ",error);
-						if (error == 'Error: The SMS verification code used to create the phone auth credential is invalid. Please resend the verification code sms and be sure use the verification code provided by the user.') {
+						if (error.code === 'auth/account-exists-with-different-credential') {
+							var pendingCred = error.credential;
+							var email = error.email;
+							firebase.auth().currentUser.linkWithCredential(pendingCred);
+						}
+
+						else if (error == 'Error: The SMS verification code used to create the phone auth credential is invalid. Please resend the verification code sms and be sure use the verification code provided by the user.') {
 							swal({
 								title: 'Código Inválido',
 								text: "El código que ingresaste no es válido, asegúrate que estás ingresando el código proporcionado correctamente. Si aún no logras acceder vuelve a enviar el SMS del código de verificación.",
@@ -366,6 +381,7 @@ app.controller('LoginTlfController', function ($scope, ApiFactory, typeLoginPara
 								confirmButtonColor: '#FF4200'
 							});
 						} else if (error == 'Error: This credential is already associated with a different user account.'){
+							
 							swal({
 								title: 'Error',
 								text: "Esta credencial ya está asociada a una cuenta de usuario diferente.",
@@ -969,7 +985,8 @@ app.controller('HomeController', function ($sce, $scope, ApiFactory, paramAthlet
 													CreationTime      : moment(user.metadata.creationTime).format('YYYY-MM-DD'),
 													LastSignInTime    : moment(user.metadata.lastSignInTime).format('YYYY-MM-DD'),
 													Token             : user.uid, //data
-													Birthday          : "1985-01-01",
+													// Birthday          : "1985-01-01",
+													Birthday          : "",
 													Password          : "",
 													Gty_Id            : $scope.formParamsFB.generFB, //1 masculino 2 femenino
 													UrlAvatar         : 6, // img por FB
@@ -1216,7 +1233,8 @@ app.controller('HomeController', function ($sce, $scope, ApiFactory, paramAthlet
 										CreationTime      : moment(user.metadata.creationTime).format('YYYY-MM-DD'),
 										LastSignInTime    : moment(user.metadata.lastSignInTime).format('YYYY-MM-DD'),
 										Token             : user.uid, //data
-										Birthday          : "1985-01-01",
+										// Birthday          : "1985-01-01",
+										Birthday          : "",
 										Password          : "",
 										Gty_Id            : $scope.formParamsPhone.generPhone, //1 masculino 2 femenino
 										UrlAvatar         : 6,
@@ -1505,7 +1523,8 @@ app.controller('HomeController', function ($sce, $scope, ApiFactory, paramAthlet
 														CreationTime      : moment(user.metadata.creationTime).format('YYYY-MM-DD'),
 														LastSignInTime    : moment(user.metadata.lastSignInTime).format('YYYY-MM-DD'),
 														Token             : user.uid, //data
-														Birthday          : "1985-01-01",
+														// Birthday          : "1985-01-01",
+														Birthday          : "",
 														Password          : "",
 														Gty_Id            : $scope.formParamsEmail.generEmail, //1 masculino 2 femenino
 														UrlAvatar         : 6,
@@ -1520,7 +1539,6 @@ app.controller('HomeController', function ($sce, $scope, ApiFactory, paramAthlet
 														Url_Referrer      : "DATO QUEMADO URL"
 													};
 													console.log(objUser);
-
 													userFire.updateProfile({ //isnewuser
 														displayName: $scope.formParamsEmail.nameEmail
 													}).then(function () {
@@ -2216,7 +2234,7 @@ app.controller('RoutinesByPlanController', function ($scope, ApiFactory, paramPl
 															}
 														}
 													}
-												} else if (validateRoutine.data.value === 1 && sst_Id === 1 && sty_Id === 1) { // rutina realizada
+												}else if (validateRoutine.data.value === 1 && sst_Id === 1 && sty_Id === 1) { // rutina realizada
 													$scope.validateRoutine = false;
 													Materialize.Toast.removeAll();
 													Materialize.toast('\xA1Rutina realizada!', 2500, 'orange');
@@ -2860,7 +2878,20 @@ app.controller('DailyRoutineController', function ($scope, ApiFactory, paramRout
 							console.log("datos insertados: ", query);
 						});
 					};
-
+					$scope.updateAltura = function () {
+						var altura = $('#alturaUnidad').val();
+						// console.log(altura);
+						var updateInfo = {
+							Id: userID,
+							Height_Id:altura,
+							Height:$scope.customerProfile.height
+						};
+						// console.log("This is update height"+updateInfo.Height_Id);
+						ApiFactory.updateHeight(updateInfo).then(function (updateHeight) {
+							// console.log('Update Height API => ', updateHeight);
+							Materialize.toast('Unidad Actualizada', 3000, 'green');
+						});
+					};
 					$scope.empty = function () {
 						$('iframe').attr('src', $('iframe').attr('src'));
 						$timeout(function () {

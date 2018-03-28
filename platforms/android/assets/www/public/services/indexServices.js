@@ -351,6 +351,14 @@ app.factory('ApiFactory', function ($http) {
 				console.log(err);
 			});
 		},
+		
+		updateHeight: function updateHeight(data) {
+			return $http.put(API_URL +'/customer/ChangeHeight?token=lklkl',data).then(function(object){
+				return object;
+			}).catch(function(err){
+			console.log(err);
+			})
+		},
 		changePlan: function changePlan(data) {
 			console.log("changePlan: ", data);
 			return $http.post(API_URL + '/customer/ChangePlan?token=lklkl', data).then(function (object) {
