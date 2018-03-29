@@ -29,7 +29,8 @@
 							<div class="col s2 padding0">
 								<span class="flaticon-calendar-6"></span>
 							</div>
-							<div class="col s10 padding0">Desde {{::fecha}} en InfluenceME</div>
+							<!-- <div class="col s10 padding0">Desde {{::fecha}} en InfluenceME</div> -->
+							<div class="col s10 padding0">InfluenceME</div>
 						</div>
 					</div>
 				</div>
@@ -203,7 +204,7 @@
 					<span>Unidades de Altura</span>
 				</div>
 				<div class="col s2 m2 l2 xl2" style="font-size:15px">
-					<span style="margin-left:-10px">{{unitH}}</span>
+					<span style="margin-left:-10px;">{{unitH}}</span>
 				</div>
 				<div class="col s2 m2 l2 xl2 center" style="font-size:12px">
 					<a sidebar-toggle="sidebar8" class="onsidebar">
@@ -211,6 +212,8 @@
 					</a>
 				</div>
 			</div>
+			
+			
 			<div class="row effectJ background1A whiteN fadeIn animated" style="padding:15px;margin-bottom:2px;animation-delay:1.4s">
 				<div class="col s12 m12 l12 xl12" style="font-size:15px">
 					<span>MI SUSCRIPCIÓN</span>
@@ -426,13 +429,18 @@
 						<div class="errorTxt12"></div>
 					</div> -->
 					<div class="input-field col s12">
-						<label for="altura">Altura</label>
-						<input id="altura" name="altura" type="text" style="color:#FF4200 !important" class="active validate"
+						<label for="alts">Altura</label>
+						<input id="alts" name="alts" type="text" style="color:#FF4200 !important" class="active validate"
 						 value="{{::customerProfile.height}} {{unitH}}" data-error=".errorTxt13" disabled="disabled">
 						<div class="errorTxt13"></div>
 					</div>
+					<div class="col s12" style="margin-left:15px;">
+						<input type="number" id="textAltura" placeholder="cambiar la altura" style="box-shadow: 0 0px 0 0 #FF4200; color:#777" class="center border-radius text-center input-next"
+	>
+					</div>
+					<br/>
 					<div class="col s12" style="margin-bottom: 30px">
-						<select id="alturaUnidad" name="unidad">
+						<select id="altura" name="altura">
 							<option value="" selected="selected">Seleccione Unidad</option>
 							<option value="1">CMS</option>
 							<option value="2">Pulgadas</option>

@@ -3,6 +3,7 @@
 app.factory('ApiFactory', function ($http) {
 
 	var API_URL = 'http://35.196.64.161:8080/api';
+	//http://35.196.64.161:8080/api
 
 	var ApiFactory = {
 
@@ -351,13 +352,12 @@ app.factory('ApiFactory', function ($http) {
 				console.log(err);
 			});
 		},
-		
 		updateHeight: function updateHeight(data) {
-			return $http.put(API_URL +'/customer/ChangeHeight?token=lklkl',data).then(function(object){
-				return object;
-			}).catch(function(err){
-			console.log(err);
-			})
+		 return $http.put(API_URL +'/customer/ChangeHeight?token=lklkl',data).then(function(object){
+			 return object;
+		 }).catch(function(err){
+           console.log(err);
+		 })
 		},
 		changePlan: function changePlan(data) {
 			console.log("changePlan: ", data);

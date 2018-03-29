@@ -108,7 +108,7 @@
 														</div>
 														<div class="data">
 															<div class="content classDiv" style="margin-top:-180px">
-																<img ng-if="row.sst_Id != 1||row.sty_Id === 2 && row.sst_Id === 3 || row.sty_Id === 2 && row.sst_Id === 2 || row.sty_Id === 1 && row.sst_Id === 3"
+																<img ng-if="row.sst_Id===2&&row.sty_Id===1|| row.sty_Id === 2 && row.sst_Id === 3 || row.sty_Id === 2 && row.sst_Id === 2 || row.sty_Id === 1 && row.sst_Id === 3"
 																 src="dist/img/padlock.png" alt="lock" style="position: absolute;margin: auto;left: 0;right: 0;width:60px">
 																<p style="text-align:center;color:white">{{::row.name}}</p>
 																<p class="EsphimereBold" style="font-weight: bold;text-align:center;color:white">{{::row.plan}}</p>

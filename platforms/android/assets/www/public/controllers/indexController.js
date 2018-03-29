@@ -11,6 +11,7 @@ app.filter('strLimit', ['$filter', function ($filter) {
 		if (input.length <= limit) {
 			return input;
 		}
+
 		return $filter('limitTo')(input, limit) + '...';
 	};
 }]);
@@ -175,8 +176,8 @@ app.controller('FirtsController', function ($scope, ApiFactory) {
 app.controller('LoginController', function ($scope, ApiFactory, typeLoginParam) {
 	console.log('login');
 	angular.element('body').css({ background: '#4d4d4d' });
-
 	firebase.auth().onAuthStateChanged(function (user) {
+		console.log(user)
 		if (user) {
 			ApiFactory.getCustomerState(user.uid).then(function (state) {
 				if (state.data.error.value === 1) { //existe user BD
@@ -185,37 +186,46 @@ app.controller('LoginController', function ($scope, ApiFactory, typeLoginParam) 
 			});
 		}
 	});
-
 	var provider = new firebase.auth.FacebookAuthProvider().setCustomParameters({ auth_type: 'reauthenticate' });
-	
 	$scope.loginFB = function () {
 		firebase.auth().signInWithRedirect(provider).then(function () {
 			firebase.auth().getRedirectResult().then(function (result) {
+				console.log("This is result"+result);
 				var token = result.credential.accessToken;
 				var user = result.user;
 				typeLoginParam.setString(2); //Login FB
 				localStorage.setItem("typeLoginParam", 2);
 				location.href = "#!/home";
 			}).catch(function (error) {
-				
-				console.log(error);
-				console.log(error.credential);
-				if (error.code === 'auth/account-exists-with-different-credential') {
-					var pendingCred = error.credential;
-					var email = error.email;
-					firebase.auth().currentUser.linkWithCredential(pendingCred);
-				}
-
-				var errorCode = error.code;
-				var errorMessage = error.message;
-				
+				// console.log("This is error"+error);
+				// var errorCode = error.code;
+				// var errorMessage = error.message;
+				// if (error.code === 'auth/account-exists-with-different-credential') {
+				// 	 var pendingCred = error.credential; 
+				// 	 var email = error.email; 
+				// 	firebase.auth().currentUser.linkWithCredential(pendingCred).then(function(user) {
+				// 		console.log("Account linking success", user);
+				// 	}, function(error) {
+				// 		console.log("Account linking error", error);
+				// 	}); 
+				// 	}
 			});
+		}).catch(function (error) {
+			console.log("This is error"+error);
+			
+			if (error.code === 'auth/account-exists-with-different-credential'||error.code ==='auth/credential-already-in-use') {
+				var pendingCred = error.credential; 
+				var email = error.email; 
+			   firebase.auth().currentUser.linkWithCredential(pendingCred).then(function(user) {
+				   console.log("Account linking success", user);
+			   }, function(error) {
+				   console.log("Account linking error", error);
+			   }); 
+			   }
 		});
 	};
-	
 
 });
-
 app.controller('LoginTlfController', function ($scope, ApiFactory, typeLoginParam) {
 	console.log('login1');
 	angular.element('body').css({ background: 'white' });
@@ -254,7 +264,6 @@ app.controller('LoginTlfController', function ($scope, ApiFactory, typeLoginPara
 			}
 		});
 	});
-
 	$('.termAccept').on('click', function () {
 		$('#termCheck').prop('checked', true);
 	});
@@ -339,7 +348,6 @@ app.controller('LoginTlfController', function ($scope, ApiFactory, typeLoginPara
 					$('#div-code').fadeIn();
 					$('#formInit').fadeOut();
 					$('#btn_phone').html('Registrar');
-
 				} else if (param === 2) {
 					/* var code = $('#code').val(); */
 					var code = $('#input1').val() + $('#input2').val() + $('#input3').val() + $('#input4').val() + $('#input5').val() + $('#input6').val();
@@ -347,22 +355,19 @@ app.controller('LoginTlfController', function ($scope, ApiFactory, typeLoginPara
 					var signInCredential = firebase.auth.PhoneAuthProvider.credential(verificationId, code);
 
 					firebase.auth().signInWithCredential(signInCredential).then(function (res) {
+			
 						typeLoginParam.setString({
 							type: 1,
 							operator: operator,
 							phone: phoneComplete
 						}); //Login SMS
 						localStorage.setItem("typeLoginParam", 1);
-						location.href = "#!/home";
-					}, function (error) {
-						console.log("aqui1 => ",error);
-						if (error.code === 'auth/account-exists-with-different-credential') {
-							var pendingCred = error.credential;
-							var email = error.email;
-							firebase.auth().currentUser.linkWithCredential(pendingCred);
-						}
 
-						else if (error == 'Error: The SMS verification code used to create the phone auth credential is invalid. Please resend the verification code sms and be sure use the verification code provided by the user.') {
+						location.href = "#!/home";
+						}, function (error) {
+						  console.log("aqui1 => ",error);
+						
+						if (error == 'Error: The SMS verification code used to create the phone auth credential is invalid. Please resend the verification code sms and be sure use the verification code provided by the user.') {
 							swal({
 								title: 'Código Inválido',
 								text: "El código que ingresaste no es válido, asegúrate que estás ingresando el código proporcionado correctamente. Si aún no logras acceder vuelve a enviar el SMS del código de verificación.",
@@ -381,7 +386,6 @@ app.controller('LoginTlfController', function ($scope, ApiFactory, typeLoginPara
 								confirmButtonColor: '#FF4200'
 							});
 						} else if (error == 'Error: This credential is already associated with a different user account.'){
-							
 							swal({
 								title: 'Error',
 								text: "Esta credencial ya está asociada a una cuenta de usuario diferente.",
@@ -427,13 +431,11 @@ app.controller('LoginTlfController', function ($scope, ApiFactory, typeLoginPara
 		};
 	}, 2000);
 });
-
 app.controller('LoginEmailController', function ($scope, ApiFactory, typeLoginParam) {
 	console.log('loginEmail');
 	firebase.auth().onAuthStateChanged(function (user) {
 		if (user && user.providerData[0].providerId == 'facebook.com' || user && user.providerData[0].providerId == 'phone' || user && user.providerData[0].providerId == 'password' && user.emailVerified) location.href = "#!/home";
 	});
-
 	$(function () {
 		Materialize.updateTextFields();
 		$('#signup').on('click', function () {
@@ -508,7 +510,6 @@ app.controller('LoginEmailController', function ($scope, ApiFactory, typeLoginPa
 			}
 		});
 	});
-
 	$('#rcemail').on('change', function () {
 		$('#cemail').val($('#rcemail').val());
 		Materialize.updateTextFields();
@@ -662,7 +663,7 @@ app.controller('HomeController', function ($sce, $scope, ApiFactory, paramAthlet
 	$('#backLogout').on('click',function() {
 		firebase.auth().signOut();
 	});
-
+    
 	$scope.varPlans = goPlans.getString;
 	//console.log("goPlans => ", $scope.varPlans());
 	if ($scope.varPlans() == 1){
@@ -883,6 +884,7 @@ app.controller('HomeController', function ($sce, $scope, ApiFactory, paramAthlet
 									/* var code = $('#code').val(); */
 									var code = $('#input1').val() + $('#input2').val() + $('#input3').val() + $('#input4').val() + $('#input5').val() + $('#input6').val();
 									var verificationId = credential.verificationId;
+									var prevUser = firebase.auth().currentUser;
 									var signInCredential = firebase.auth.PhoneAuthProvider.credential(verificationId, code);
 
 									firebase.auth().currentUser.linkWithCredential(signInCredential).then(function (res) {
@@ -985,8 +987,7 @@ app.controller('HomeController', function ($sce, $scope, ApiFactory, paramAthlet
 													CreationTime      : moment(user.metadata.creationTime).format('YYYY-MM-DD'),
 													LastSignInTime    : moment(user.metadata.lastSignInTime).format('YYYY-MM-DD'),
 													Token             : user.uid, //data
-													// Birthday          : "1985-01-01",
-													Birthday          : "",
+													Birthday          : "1999-08-12",
 													Password          : "",
 													Gty_Id            : $scope.formParamsFB.generFB, //1 masculino 2 femenino
 													UrlAvatar         : 6, // img por FB
@@ -1046,7 +1047,16 @@ app.controller('HomeController', function ($sce, $scope, ApiFactory, paramAthlet
 										// modal3//
 									}, function (error) {
 										console.log("aqui1 => ",error);
-										if (error == 'Error: The SMS verification code used to create the phone auth credential is invalid. Please resend the verification code sms and be sure use the verification code provided by the user.'){
+										if (error.code === 'auth/account-exists-with-different-credential'||error.code ==='auth/credential-already-in-use') {
+											var pendingCred = error.credential; 
+											var email = error.email; 
+											firebase.auth().currentUser.linkWithCredential(pendingCred).then(function(user) {
+											console.log("Account linking success", user);
+										   }, function(error) {
+											console.log("Account linking error", error);
+										   }); 
+										   }
+										else if (error == 'Error: The SMS verification code used to create the phone auth credential is invalid. Please resend the verification code sms and be sure use the verification code provided by the user.'){
 											swal({
 												title             : 'Código Inválido',
 												text              : "El código que ingresaste no es válido, asegúrate que estás ingresando el código proporcionado correctamente. Si aún no logras acceder vuelve a enviar el SMS del código de verificación.",
@@ -1233,8 +1243,7 @@ app.controller('HomeController', function ($sce, $scope, ApiFactory, paramAthlet
 										CreationTime      : moment(user.metadata.creationTime).format('YYYY-MM-DD'),
 										LastSignInTime    : moment(user.metadata.lastSignInTime).format('YYYY-MM-DD'),
 										Token             : user.uid, //data
-										// Birthday          : "1985-01-01",
-										Birthday          : "",
+										Birthday          : "1999-08-12",
 										Password          : "",
 										Gty_Id            : $scope.formParamsPhone.generPhone, //1 masculino 2 femenino
 										UrlAvatar         : 6,
@@ -1523,8 +1532,7 @@ app.controller('HomeController', function ($sce, $scope, ApiFactory, paramAthlet
 														CreationTime      : moment(user.metadata.creationTime).format('YYYY-MM-DD'),
 														LastSignInTime    : moment(user.metadata.lastSignInTime).format('YYYY-MM-DD'),
 														Token             : user.uid, //data
-														// Birthday          : "1985-01-01",
-														Birthday          : "",
+														Birthday          : "1999-08-12",
 														Password          : "",
 														Gty_Id            : $scope.formParamsEmail.generEmail, //1 masculino 2 femenino
 														UrlAvatar         : 6,
@@ -1539,6 +1547,7 @@ app.controller('HomeController', function ($sce, $scope, ApiFactory, paramAthlet
 														Url_Referrer      : "DATO QUEMADO URL"
 													};
 													console.log(objUser);
+
 													userFire.updateProfile({ //isnewuser
 														displayName: $scope.formParamsEmail.nameEmail
 													}).then(function () {
@@ -1650,7 +1659,7 @@ app.controller('HomeController', function ($sce, $scope, ApiFactory, paramAthlet
 			}
 		}
 	});
-
+	
 	$scope.prr = false;
 	angular.element('body').css({ background: '#4d4d4d' });
 	$scope.arrLists = [];
@@ -1746,6 +1755,7 @@ app.controller('HomeController', function ($sce, $scope, ApiFactory, paramAthlet
 		$scope.arrAthleteSearcher = "";
 		$scope.arrPlansSearcher   = "";
 	}; */
+    //When the user cancels the subscription the states are sty_Id = 2, sst_Id = 2
 
 	$scope.sendData = function (value) {
 		$('#preloader-app').css('display', 'none');
@@ -1803,7 +1813,6 @@ app.controller('HomeController', function ($sce, $scope, ApiFactory, paramAthlet
 		$el.removeClass('animated ' + $scope.animation.current);
 	};
 });
-
 app.controller('ProgressController', function ($scope, ApiFactory, goPlans) {
 	console.log('progress');
 	angular.element('body').css({ background: '#4d4d4d' });
@@ -2026,9 +2035,7 @@ app.controller('RoutinesByPlanController', function ($scope, ApiFactory, paramPl
 			id   : id
 		});
 	};
-
 	$scope.stringValue = paramPlan.getString;
-
 	ApiFactory.getPlanByRoutine($scope.stringValue()).then(function (data) {
 		if (data.status === 200 && data.data.error.value === 1) {
 			$scope.plan = data.data.list[0];
@@ -2054,7 +2061,6 @@ app.controller('RoutinesByPlanController', function ($scope, ApiFactory, paramPl
 					}).catch(function (error) {
 						console.log(error);
 					});
-
 				// VALIDATION PLAN
 				ApiFactory.getPlanState(userID).then(function (planState) {
 					console.log("DUDAAA", planState.data);
@@ -2079,10 +2085,7 @@ app.controller('RoutinesByPlanController', function ($scope, ApiFactory, paramPl
 									//inserta o cambia de plan
 									ApiFactory.changePlan(objChange).then(function (changePlan) {
 										console.log("CHANGE PLAN => ", changePlan.data);
-										if(changePlan.data.error.value == 0){
-											Materialize.Toast.removeAll();
-										}
-										else if(changePlan.data.error.value == -1){
+										if(changePlan.data.error.value == -1){
 											Materialize.Toast.removeAll();
 											Materialize.toast('Un cambio ya ha sido hecho hoy', 2500, 'orange');
 										}else{
@@ -2171,18 +2174,20 @@ app.controller('RoutinesByPlanController', function ($scope, ApiFactory, paramPl
 										idCup: planState.data.id,
 										idRoutine: id // id de la rutina
 									};
-
 									ApiFactory.getValidationRoutinesDay(objRoutineDay).then(function (validateRoutineDay) {
 										ApiFactory.validationRoutine(objRoutine).then(function (validateRoutine) {
 											console.log("validateRoutine => ", validateRoutine.data);
 											console.log("VALIDACION rotuine day => ", validateRoutineDay);
 											if (validateRoutineDay.data.id == 0) { // message solo puede realizar una rutina por dia
 												if (validateRoutine.data.value === 0 && sst_Id === 2 && sty_Id === 1) { // abrir modal
-													$('#modal1').modal('open');
+													Materialize.Toast.removeAll();
+													Materialize.toast('\xA1No tiene saldo!', 2500, 'orange');
 												} else if (validateRoutine.data.value === 1 && sst_Id === 2 && sty_Id === 1) { // abrir modal
-													$('#modal1').modal('open');
+													Materialize.Toast.removeAll();
+													Materialize.toast('\xA1No tiene saldo!', 2500, 'orange');
 												} else if (validateRoutine.data.value === 0 && sst_Id === 2 && sty_Id === 2) { // abrir modal
-													$('#modal1').modal('open');
+													Materialize.Toast.removeAll();
+													Materialize.toast('\xA1No tiene saldo!', 2500, 'orange');
 												} else if (validateRoutine.data.value === 1 && sst_Id === 2 && sty_Id === 2) { // abrir modal
 													$('#modal1').modal('open');
 												} else if (validateRoutine.data.value === 0 && sst_Id === 3 && sty_Id === 2) { // abrir modal
@@ -2234,7 +2239,7 @@ app.controller('RoutinesByPlanController', function ($scope, ApiFactory, paramPl
 															}
 														}
 													}
-												}else if (validateRoutine.data.value === 1 && sst_Id === 1 && sty_Id === 1) { // rutina realizada
+												} else if (validateRoutine.data.value === 1 && sst_Id === 1 && sty_Id === 1) { // rutina realizada
 													$scope.validateRoutine = false;
 													Materialize.Toast.removeAll();
 													Materialize.toast('\xA1Rutina realizada!', 2500, 'orange');
@@ -2249,9 +2254,11 @@ app.controller('RoutinesByPlanController', function ($scope, ApiFactory, paramPl
 												} else if (validateRoutine.data.value === 1 && sst_Id === 2 && sty_Id === 1) { // abrir modal
 													$('#modal1').modal('open');
 												} else if (validateRoutine.data.value === 0 && sst_Id === 2 && sty_Id === 2) { // abrir modal
-													$('#modal1').modal('open');
+											        Materialize.Toast.removeAll();
+													Materialize.toast('\xDeberías suscribir el plan primero!', 2500, 'orange');
 												} else if (validateRoutine.data.value === 1 && sst_Id === 2 && sty_Id === 2) { // abrir modal
-													$('#modal1').modal('open');
+													Materialize.Toast.removeAll();
+													Materialize.toast('\xDeberías suscribir el plan primero!', 2500, 'orange');
 												} else if (validateRoutine.data.value === 0 && sst_Id === 3 && sty_Id === 2) { // abrir modal
 													$('#modal1').modal('open');
 												} else if (validateRoutine.data.value === 1 && sst_Id === 3 && sty_Id === 2) { // abrir modal
@@ -2261,7 +2268,6 @@ app.controller('RoutinesByPlanController', function ($scope, ApiFactory, paramPl
 												} else if (validateRoutine.data.value === 1 && sst_Id === 3 && sty_Id === 1) { // abrir modal
 													$('#modal1').modal('open');
 												}
-
 												if (planState.data.error === null) {
 													if ($scope.plan.name != planState.data.planName) {
 														swal({
@@ -2367,7 +2373,6 @@ app.controller('RoutinesByPlanController', function ($scope, ApiFactory, paramPl
 								url_Referrer: customerClient.url_Referrer,
 								height      : customerClient.height
 							};
-
 							//SUBSCRIPCION DEL CLIENTE
 							$scope.openSubscription = function () {
 
@@ -2378,7 +2383,8 @@ app.controller('RoutinesByPlanController', function ($scope, ApiFactory, paramPl
 										if (data.status === 200 && data.data.error.value === 1) {
 
 											//plugin analitycs
-											// cordova.plugins.firebase.analytics.logEvent("Suscripcion", { param1: "Suscripcion" });
+											//cordova.plugins.firebase.analytics.logEvent("Suscripcion", { param1: "Suscripcion" });
+
 											ApiFactory.getCustomerState(userID).then(function (newState) {
 												console.log("LISTA => ", newState);
 
@@ -2489,14 +2495,10 @@ app.controller('DailyRoutineController', function ($scope, ApiFactory, paramRout
 		window.history.go(-1);
 		navigator.app.backHistory();
 	});
-
-
 	var userID = firebase.auth().currentUser.uid;
 	console.log(userID);
-
 	$scope.paramsStartRoutine = paramsStartRoutine.getString;
 	console.log("PARAMETROSS START: ", $scope.paramsStartRoutine());
-
 	$scope.stringValue = paramRoutine.getString; // id rutina
 	console.log("PARAMETROS GET EXER", $scope.stringValue());
 
@@ -2812,9 +2814,6 @@ app.controller('DailyRoutineController', function ($scope, ApiFactory, paramRout
 								Materialize.toast('Por favor inicie la rutina en el botón Empezar', 2500, 'orange');
 							}
 						}); */
-
-
-
 						$scope.getWeight = [];
 
 						var _loop = function _loop(_i) {
@@ -2823,7 +2822,6 @@ app.controller('DailyRoutineController', function ($scope, ApiFactory, paramRout
 								ser_Id: arr.id,
 								cur_Id: cur_Id
 							};
-
 							console.log(objWeights);
 							ApiFactory.getWeightExercises(objWeights).then(function (query) {
 								console.log(query);
@@ -2878,20 +2876,7 @@ app.controller('DailyRoutineController', function ($scope, ApiFactory, paramRout
 							console.log("datos insertados: ", query);
 						});
 					};
-					$scope.updateAltura = function () {
-						var altura = $('#alturaUnidad').val();
-						// console.log(altura);
-						var updateInfo = {
-							Id: userID,
-							Height_Id:altura,
-							Height:$scope.customerProfile.height
-						};
-						// console.log("This is update height"+updateInfo.Height_Id);
-						ApiFactory.updateHeight(updateInfo).then(function (updateHeight) {
-							// console.log('Update Height API => ', updateHeight);
-							Materialize.toast('Unidad Actualizada', 3000, 'green');
-						});
-					};
+
 					$scope.empty = function () {
 						$('iframe').attr('src', $('iframe').attr('src'));
 						$timeout(function () {
@@ -2910,14 +2895,13 @@ app.controller('DailyRoutineController', function ($scope, ApiFactory, paramRout
 	}); // fin planState
 
 });
-
 app.controller('PerfilController', function ($scope, ApiFactory, $window, goPlans) {
+	
 	console.log('perfil');
 	angular.element('body').css({ background: '#4d4d4d' });
 	$('.termAccept').on('click', function () {
 		$('#termCheck').prop('checked', true);
 	});
-
 	$(document).ready(function () {
 		$('.collapsible').collapsible();
 		Materialize.updateTextFields();
@@ -2953,6 +2937,7 @@ app.controller('PerfilController', function ($scope, ApiFactory, $window, goPlan
 
 	var userFire = firebase.auth().currentUser;
 	var userID = userFire.uid;
+	
 	moment.locale('es');
 	var creationTime = userFire.metadata.creationTime;
 	$scope.fecha = moment(creationTime).fromNow();
@@ -3016,7 +3001,7 @@ app.controller('PerfilController', function ($scope, ApiFactory, $window, goPlan
 			} else {
 				$scope.unitH = 'Pulgadas';
 			}
-
+			
 			ApiFactory.getTextCountry().then(function (textCountry) {
 				var idOperator = dataCustomer.data.list[0].idoperator;
 				for (var i = 0; i < textCountry.data.list.length; i++) {
@@ -3250,12 +3235,26 @@ app.controller('PerfilController', function ($scope, ApiFactory, $window, goPlan
 			Materialize.toast('Unidad Actualizada', 3000, 'green');
 		});
 	};
-});
-
+	$scope.updateAltura = function () {
+		var altura = $('#altura').val();
+		var heightAltura=$('#textAltura').val();
+		console.log(altura);
+		var updateInfo = {
+			Id: userID,
+			Height_Id:altura,
+			Height:heightAltura
+		};
+		console.log("This is update height"+updateInfo.Height_Id);
+		ApiFactory.updateHeight(updateInfo).then(function (updateHeight) {
+			console.log('Update Height API => ', updateHeight);
+			Materialize.toast('Unidad Actualizada', 3000, 'green');
+		});
+	};
 app.controller('CalendarController', function ($scope, ApiFactory, $window) {
 	console.log('calendar');
-	angular.element('body').css({ background: '#4d4d4d' });
-
+	angular.element('body').css({ background: '#4d4d4d' 
+});
+});
 	/* ApiFactory.getFAQ().then(function (query) {
 		if (query.status === 200 && query.data.error.value === 1) {
 			$scope.FAQS = query.data.list;
@@ -3398,3 +3397,4 @@ app.controller('CalendarController', function ($scope, ApiFactory, $window) {
 		console.log(err);
 	}); */
 });
+
