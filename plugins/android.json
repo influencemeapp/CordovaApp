@@ -52,14 +52,14 @@
     "cordova-plugin-browsertab": {
       "PACKAGE_NAME": "com.influenceme.android"
     },
-    "cordova-plugin-firebase": {
-      "PACKAGE_NAME": "com.influenceme.android"
-    },
     "cordova-plugin-customurlscheme": {
       "URL_SCHEME": "com.firebase.cordova",
       "ANDROID_SCHEME": " ",
       "ANDROID_HOST": " ",
       "ANDROID_PATHPREFIX": "/",
+      "PACKAGE_NAME": "com.influenceme.android"
+    },
+    "cordova-plugin-firebase": {
       "PACKAGE_NAME": "com.influenceme.android"
     }
   },

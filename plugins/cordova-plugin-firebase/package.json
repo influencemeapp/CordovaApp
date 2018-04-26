@@ -1,27 +1,28 @@
 {
-  "_from": "cordova-plugin-firebase@^0.1.25",
-  "_id": "cordova-plugin-firebase@0.1.25",
+  "_from": "cordova-plugin-firebase@1.0.2",
+  "_id": "cordova-plugin-firebase@1.0.2",
   "_inBundle": false,
-  "_integrity": "sha1-fh+W2FiKGdIhi7Tbyg1cRC8eJlE=",
+  "_integrity": "sha1-SFwMaF6cwyJtdco+L7l9xiDNB+Q=",
   "_location": "/cordova-plugin-firebase",
   "_phantomChildren": {},
   "_requested": {
-    "type": "range",
+    "type": "version",
     "registry": true,
-    "raw": "cordova-plugin-firebase@^0.1.25",
+    "raw": "cordova-plugin-firebase@1.0.2",
     "name": "cordova-plugin-firebase",
     "escapedName": "cordova-plugin-firebase",
-    "rawSpec": "^0.1.25",
+    "rawSpec": "1.0.2",
     "saveSpec": null,
-    "fetchSpec": "^0.1.25"
+    "fetchSpec": "1.0.2"
   },
   "_requiredBy": [
-    "#USER"
+    "#USER",
+    "/"
   ],
-  "_resolved": "https://registry.npmjs.org/cordova-plugin-firebase/-/cordova-plugin-firebase-0.1.25.tgz",
-  "_shasum": "7e1f96d8588a19d2218bb4dbca0d5c442f1e2651",
-  "_spec": "cordova-plugin-firebase@^0.1.25",
-  "_where": "/Users/shekharjuneja/Documents/Root/Influence",
+  "_resolved": "https://registry.npmjs.org/cordova-plugin-firebase/-/cordova-plugin-firebase-1.0.2.tgz",
+  "_shasum": "485c0c685e9cc3226d75ca3e2fb97dc620cd07e4",
+  "_spec": "cordova-plugin-firebase@1.0.2",
+  "_where": "/Users/shekharjuneja/Documents/CordovaApp",
   "author": {
     "name": "Robert Arnesson"
   },
@@ -56,5 +57,20 @@
     "type": "git",
     "url": "git+https://github.com/arnesson/cordova-plugin-firebase.git"
   },
-  "version": "0.1.25"
+  "scripts": {
+    "install:cordova:v6": "npm uninstall cordova && npm install cordova@^6.x.x --no-save",
+    "install:cordova:v7": "npm uninstall cordova && npm install cordova@^7.x.x --no-save",
+    "install:cordova:v8": "npm uninstall cordova && npm install cordova@^8.x.x --no-save",
+    "postversion": "git push && git push --tags && npm publish",
+    "test": "npm run test:cordova:v6 && npm run test:cordova:v7 && npm run test:cordova:v8",
+    "test:android:v6": "sh build-android-v6.sh",
+    "test:android:v7": "sh build-android-v7.sh",
+    "test:browser:v5": "sh build-browser-v5.sh",
+    "test:cordova:v6": "npm run install:cordova:v6 && npm run test:ios:v4 && npm run test:android:v6 && npm run test:browser:v5",
+    "test:cordova:v7": "npm run install:cordova:v7 && npm run test:ios:v4 && npm run test:android:v7 && npm run test:browser:v5",
+    "test:cordova:v8": "npm run install:cordova:v8 && npm run test:ios:v4 && npm run test:android:v7 && npm run test:browser:v5",
+    "test:ios:v4": "sh build-ios-v4.sh",
+    "version": "node ./bump-version.js && git add -A plugin.xml"
+  },
+  "version": "1.0.2"
 }

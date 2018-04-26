@@ -49,12 +49,12 @@
     <feature name="BrowserTab">
         <param name="android-package" value="com.google.cordova.plugin.browsertab.BrowserTab" />
     </feature>
+    <feature name="LaunchMyApp">
+        <param name="android-package" value="nl.xservices.plugins.LaunchMyApp" />
+    </feature>
     <feature name="FirebasePlugin">
         <param name="android-package" value="org.apache.cordova.firebase.FirebasePlugin" />
         <param name="onload" value="true" />
-    </feature>
-    <feature name="LaunchMyApp">
-        <param name="android-package" value="nl.xservices.plugins.LaunchMyApp" />
     </feature>
     <name>InfluenceMe</name>
     <description>

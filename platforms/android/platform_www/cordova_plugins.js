@@ -162,19 +162,19 @@ module.exports = [
     ]
   },
   {
-    "id": "cordova-plugin-firebase.FirebasePlugin",
-    "file": "plugins/cordova-plugin-firebase/www/firebase.js",
-    "pluginId": "cordova-plugin-firebase",
-    "clobbers": [
-      "FirebasePlugin"
-    ]
-  },
-  {
     "id": "cordova-plugin-customurlscheme.LaunchMyApp",
     "file": "plugins/cordova-plugin-customurlscheme/www/android/LaunchMyApp.js",
     "pluginId": "cordova-plugin-customurlscheme",
     "clobbers": [
       "window.plugins.launchmyapp"
+    ]
+  },
+  {
+    "id": "cordova-plugin-firebase.FirebasePlugin",
+    "file": "plugins/cordova-plugin-firebase/www/firebase.js",
+    "pluginId": "cordova-plugin-firebase",
+    "clobbers": [
+      "FirebasePlugin"
     ]
   }
 ];
@@ -196,8 +196,8 @@ module.exports.metadata =
   "cordova-plugin-splashscreen": "5.0.2",
   "cordova-universal-links-plugin": "1.2.1",
   "cordova-plugin-browsertab": "0.2.0",
-  "cordova-plugin-firebase": "0.1.25",
-  "cordova-plugin-customurlscheme": "4.3.0"
+  "cordova-plugin-customurlscheme": "4.3.0",
+  "cordova-plugin-firebase": "1.0.2"
 };
 // BOTTOM OF METADATA
 });

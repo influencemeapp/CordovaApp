@@ -721,6 +721,7 @@ app.controller('HomeController', function ($sce, $scope, ApiFactory, paramAthlet
 	// 	// data.additionalData
 	// });
 	// cordova.plugins.firebase.analytics.logEvent("my_event", {param1: "value1"});
+	// window.FirebasePlugin.logEvent("home_event");
 	// plugins analitycs
 
 	// reset FORM
@@ -2384,7 +2385,7 @@ app.controller('RoutinesByPlanController', function ($scope, ApiFactory, paramPl
 
 											//plugin analitycs
 											//cordova.plugins.firebase.analytics.logEvent("Suscripcion", { param1: "Suscripcion" });
-
+											window.FirebasePlugin.logEvent("Suscripcion", { param1: "Suscripcion" });
 											ApiFactory.getCustomerState(userID).then(function (newState) {
 												console.log("LISTA => ", newState);
 
@@ -2613,6 +2614,7 @@ app.controller('DailyRoutineController', function ($scope, ApiFactory, paramRout
 
 											//plugin analitycs
 											// cordova.plugins.firebase.analytics.logEvent("Inicio_Rutina", { param1: "Inicio_Rutina" });
+											window.FirebasePlugin.logEvent("Inicio_Rutina", { param1: "Inicio_Rutina" });
 											$('#startRoutine').hide();
 											$('#finishRoutine').show();
 											Materialize.Toast.removeAll();
@@ -2649,6 +2651,7 @@ app.controller('DailyRoutineController', function ($scope, ApiFactory, paramRout
 							if (startRoutine.status === 200) {
 								//plugin analitycs
 								// cordova.plugins.firebase.analytics.logEvent("Inicio_Rutina", { param1: "Inicio_Rutina" });
+								window.FirebasePlugin.logEvent("Inicio_Rutina", { param1: "Inicio_Rutina" });
 								console.log("RUTINA INICIADA", startRoutine.data);
 
 								$scope.cus_Id.push(startRoutine.data.list[0].cus_Id);
@@ -2701,6 +2704,7 @@ app.controller('DailyRoutineController', function ($scope, ApiFactory, paramRout
 								if (finishRoutine.data.error.value === 1) {
 									//plugin analitycs
 									// cordova.plugins.firebase.analytics.logEvent("Finalizada_Rutina", { param1: "Finalizada_Rutina" });
+									window.FirebasePlugin.logEvent("Finalizada_Rutina", { param1: "Finalizada_Rutina" });
 									//localStorage.setItem("startRoutine", "Finish");
 									Materialize.Toast.removeAll();
 									swal({
@@ -3042,6 +3046,7 @@ app.controller('PerfilController', function ($scope, ApiFactory, $window, goPlan
 						if (data.status === 200 && data.data.error.value === 1) {
 							//plugin analitycs
 							// cordova.plugins.firebase.analytics.logEvent("Suscripcion", { param1: "Suscripcion" });
+							window.FirebasePlugin.logEvent("Suscripcion", { param1: "Suscripcion" });
 							Materialize.Toast.removeAll();
 							Materialize.toast('\xA1Suscrito con Exito!', 4000, 'green');
 							$window.location = "#!/home";

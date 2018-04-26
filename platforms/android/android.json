@@ -69,11 +69,11 @@
               "count": 1
             },
             {
-              "xml": "<feature name=\"FirebasePlugin\"><param name=\"android-package\" value=\"org.apache.cordova.firebase.FirebasePlugin\" /><param name=\"onload\" value=\"true\" /></feature>",
+              "xml": "<feature name=\"LaunchMyApp\"><param name=\"android-package\" value=\"nl.xservices.plugins.LaunchMyApp\" /></feature>",
               "count": 1
             },
             {
-              "xml": "<feature name=\"LaunchMyApp\"><param name=\"android-package\" value=\"nl.xservices.plugins.LaunchMyApp\" /></feature>",
+              "xml": "<feature name=\"FirebasePlugin\"><param name=\"android-package\" value=\"org.apache.cordova.firebase.FirebasePlugin\" /><param name=\"onload\" value=\"true\" /></feature>",
               "count": 1
             }
           ]
@@ -215,14 +215,14 @@
     "cordova-plugin-browsertab": {
       "PACKAGE_NAME": "com.influenceme.android"
     },
-    "cordova-plugin-firebase": {
-      "PACKAGE_NAME": "com.influenceme.android"
-    },
     "cordova-plugin-customurlscheme": {
       "URL_SCHEME": "com.firebase.cordova",
       "ANDROID_SCHEME": " ",
       "ANDROID_HOST": " ",
       "ANDROID_PATHPREFIX": "/",
+      "PACKAGE_NAME": "com.influenceme.android"
+    },
+    "cordova-plugin-firebase": {
       "PACKAGE_NAME": "com.influenceme.android"
     }
   },
@@ -390,19 +390,19 @@
       ]
     },
     {
-      "id": "cordova-plugin-firebase.FirebasePlugin",
-      "file": "plugins/cordova-plugin-firebase/www/firebase.js",
-      "pluginId": "cordova-plugin-firebase",
-      "clobbers": [
-        "FirebasePlugin"
-      ]
-    },
-    {
       "id": "cordova-plugin-customurlscheme.LaunchMyApp",
       "file": "plugins/cordova-plugin-customurlscheme/www/android/LaunchMyApp.js",
       "pluginId": "cordova-plugin-customurlscheme",
       "clobbers": [
         "window.plugins.launchmyapp"
+      ]
+    },
+    {
+      "id": "cordova-plugin-firebase.FirebasePlugin",
+      "file": "plugins/cordova-plugin-firebase/www/firebase.js",
+      "pluginId": "cordova-plugin-firebase",
+      "clobbers": [
+        "FirebasePlugin"
       ]
     }
   ],
@@ -422,7 +422,7 @@
     "cordova-plugin-splashscreen": "5.0.2",
     "cordova-universal-links-plugin": "1.2.1",
     "cordova-plugin-browsertab": "0.2.0",
-    "cordova-plugin-firebase": "0.1.25",
-    "cordova-plugin-customurlscheme": "4.3.0"
+    "cordova-plugin-customurlscheme": "4.3.0",
+    "cordova-plugin-firebase": "1.0.2"
   }
 }
