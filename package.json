@@ -37,6 +37,7 @@
   },
   "dependencies": {
     "cordova-android": "^6.3.0",
+    "cordova-ios": "^4.5.4",
     "cordova-plugin-battery-status": "~1.2.5",
     "cordova-plugin-browsertab": "~0.2.0",
     "cordova-plugin-buildinfo": "~2.0.1",
