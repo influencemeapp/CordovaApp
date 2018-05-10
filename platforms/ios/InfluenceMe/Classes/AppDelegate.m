@@ -34,6 +34,7 @@
 {
     self.viewController = [[MainViewController alloc] init];
     return [super application:application didFinishLaunchingWithOptions:launchOptions];
+    
 }
 
 @end

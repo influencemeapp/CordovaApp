@@ -351,7 +351,7 @@ app.controller('LoginTlfController', function ($scope, ApiFactory, typeLoginPara
 				} else if (param === 2) {
 					/* var code = $('#code').val(); */
 					var code = $('#input1').val() + $('#input2').val() + $('#input3').val() + $('#input4').val() + $('#input5').val() + $('#input6').val();
-					var verificationId = credential.verificationId;
+					var verificationId = device.platform=='iOS'?credential:credential.verificationId;
 					var signInCredential = firebase.auth.PhoneAuthProvider.credential(verificationId, code);
 
 					firebase.auth().signInWithCredential(signInCredential).then(function (res) {
@@ -884,7 +884,7 @@ app.controller('HomeController', function ($sce, $scope, ApiFactory, paramAthlet
 								} else if (param === 2) {
 									/* var code = $('#code').val(); */
 									var code = $('#input1').val() + $('#input2').val() + $('#input3').val() + $('#input4').val() + $('#input5').val() + $('#input6').val();
-									var verificationId = credential.verificationId;
+									var verificationId = device.platform=='iOS'?credential:credential.verificationId;
 									var prevUser = firebase.auth().currentUser;
 									var signInCredential = firebase.auth.PhoneAuthProvider.credential(verificationId, code);
 
@@ -1416,7 +1416,7 @@ app.controller('HomeController', function ($sce, $scope, ApiFactory, paramAthlet
 								} else if (param === 2) {
 									/* var code = $('#code').val(); */
 									var code = $('#input1').val() + $('#input2').val() + $('#input3').val() + $('#input4').val() + $('#input5').val() + $('#input6').val();
-									var verificationId = credential.verificationId;
+									var verificationId = device.platform=='iOS'?credential:credential.verificationId;
 									var signInCredential = firebase.auth.PhoneAuthProvider.credential(verificationId, code);
 
 									firebase.auth().currentUser.linkWithCredential(signInCredential).then(function (res) {
@@ -1932,13 +1932,23 @@ app.controller('PlansByAthleteController', function ($rootScope, $state, $compil
 			$scope.urlVideo = $sce.trustAsHtml(urlVideo);
 			$scope.description = $scope.athlete.description;
 
-			angular.element('body').css({
-				background               : 'url(\'' + imgBack + '\') no-repeat fixed',
-				'-webkit-background-size': '100%',
-				'-moz-background-size'   : '100%',
-				'-o-background-size'     : '100%',
-				'background-size'        : '100%',
-			});
+			console.log(device.platform)
+			if(device.platform=='iOS'){
+				angular.element('body').css({
+					'background'              : 'url(\'' + imgBack + '\') no-repeat fixed',
+					'background-size'        : '100%',
+					'background-color': '#4D4D4D'
+				});
+				
+			}else{
+				angular.element('body').css({
+					'background'              : 'url(\'' + imgBack + '\') no-repeat fixed',
+					'-webkit-background-size': '100%',
+					'-moz-background-size'   : '100%',
+					'-o-background-size'     : '100%',
+					'background-size'        : '100%',
+				});
+			}
 
 			ApiFactory.getPlan($scope.athlete.id).then(function (query) {
 				if (query.status === 200 && query.data.error.value === 1) {
@@ -2829,6 +2839,7 @@ app.controller('DailyRoutineController', function ($scope, ApiFactory, paramRout
 							console.log(objWeights);
 							ApiFactory.getWeightExercises(objWeights).then(function (query) {
 								console.log(query);
+								if(query.data.list.length)
 								$scope.getWeight.push(query.data.list.pop());
 								console.log(query.data.list);
 								for (var _index2 = 0; _index2 < $scope.getWeight.length; _index2++) {
@@ -2863,9 +2874,9 @@ app.controller('DailyRoutineController', function ($scope, ApiFactory, paramRout
 					};
 
 					$scope.updateWeight = function (data, weight) {
-
+						var cur_Id;
 						if ($scope.cus_Id.length > 0) {
-							var cur_Id = $scope.cus_Id[0];
+							cur_Id = $scope.cus_Id[0];
 						} /* else {
 							var cur_Id = localStorage.getItem("cus_Id");
 						} */
